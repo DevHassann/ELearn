@@ -1,24 +1,10 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import { IUser } from "../interfaces/model.interfaces";
 
 // EMAIL REGEX PATTREN
 const emailRegexPattern: RegExp =
-  /^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\\. [a-zA-Z]{2,}$/;
-
-// IUSER INTERFACE
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-  avatar: {
-    public_id: string;
-    url: string;
-  };
-  role: string;
-  isVerified: boolean;
-  courses: Array<{ courseId: string }>;
-  comparePassword: (password: string) => Promise<boolean>;
-}
+  /^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,}$/;
 
 // USER SCHEMA
 const userSchema: Schema<IUser> = new mongoose.Schema(

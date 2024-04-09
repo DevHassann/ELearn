@@ -1,17 +1,10 @@
 import nodemailer, { Transporter } from "nodemailer";
 import ejs from "ejs";
 import path from "path";
+import { EmailOptions } from "../interfaces/util.interfaces";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
-
-// EMAIL OPTIONS INTERFACE
-interface EmailOptions {
-  email: string;
-  subject: string;
-  template: string;
-  data: { [key: string]: any };
-}
 
 // SEND MAIL FUNCTION
 const sendMail = async (options: EmailOptions): Promise<void> => {

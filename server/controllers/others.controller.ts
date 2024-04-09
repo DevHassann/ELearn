@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+// TESTING ROUTE FUNTION
 const testRouteHandler = (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
     success: true,
@@ -7,6 +8,7 @@ const testRouteHandler = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
+// UNKNOWN ROUTE FUNTION
 const unknownRouteHandler = (
   req: Request,
   res: Response,
