@@ -12,4 +12,10 @@ interface IActivationRequest {
   activation_code: string;
 }
 
-export { IRegistrationBody, IActivationRequest };
+// LOGIN USER INTERFACE [ USER ]
+interface ILoginRequest {
+  email: string;
+  password: string;
+}
+
+export { IRegistrationBody, IActivationRequest, ILoginRequest };

@@ -12,4 +12,13 @@ interface IActivationToken {
   activationCode: string;
 }
 
-export { EmailOptions, IActivationToken };
+// TOKEN OPTIONS INTERFACE
+interface ITokenOptions {
+  expires: Date;
+  maxAge: number;
+  httpOnly: boolean;
+  sameSite: "lax" | "strict" | "none" | undefined;
+  secure?: boolean;
+}
+
+export { EmailOptions, IActivationToken, ITokenOptions };

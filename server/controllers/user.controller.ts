@@ -9,9 +9,14 @@ import sendMail from "../utils/SendMail";
 import {
   IRegistrationBody,
   IActivationRequest,
+  ILoginRequest,
 } from "../interfaces/api.interfaces";
 import { IUser } from "../interfaces/model.interfaces";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { sendToken } from "../utils/SendJwtToken";
+import { redis } from "../databases/redisDatabase";
+import { accessTokenOptions, refreshTokenOptions } from "../utils/Tokens";
+import { getUserByID } from "../services/user.servies";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
@@ -102,3 +107,116 @@ export const activateUser = CatchAsyncErrors(
     }
   }
 );
+
+// LOGIN USER FUNCTION
+export const loginUser = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body as ILoginRequest;
+
+      if (!email || !password) {
+        return next(
+          new ErrorHandler("Please enter your email and password", 400)
+        );
+      }
+
+      const user = await userModel.findOne({ email }).select("+password");
+      if (!user) {
+        return next(new ErrorHandler("Invalid email or password", 400));
+      }
+
+      const isPasswordMatch = await user.comparePassword(password);
+      if (!isPasswordMatch) {
+        return next(new ErrorHandler("Invalid email or password", 400));
+      }
+
+      sendToken(user, 200, res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// LOGOUT USER FUNCTION
+export const logoutUser = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.cookie("access_token", "", { maxAge: 1 });
+      res.cookie("refresh_token", "", { maxAge: 1 });
+
+      const userId = req.user?._id || "";
+      redis.del(userId);
+
+      res.status(200).json({
+        success: true,
+        message: "User logged out successfully",
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// UPDATE ACCESS TOKEN FUNCTION
+export const updateAccessToken = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const refresh_token = req.cookies.refresh_token as string;
+
+      const decoded = jwt.verify(
+        refresh_token,
+        process.env.REFRESH_TOKEN as string
+      ) as JwtPayload;
+      if (!decoded) {
+        return next(new ErrorHandler("Could not refresh token", 400));
+      }
+
+      const session = await redis.get(decoded.id as string);
+      if (!session) {
+        return next(new ErrorHandler("Could not refresh token", 400));
+      }
+
+      const user = JSON.parse(session);
+
+      const accessToken = jwt.sign(
+        { id: user._id },
+        process.env.ACCESS_TOKEN as string,
+        {
+          expiresIn: "5m",
+        }
+      );
+      const refreshToken = jwt.sign(
+        { id: user._id },
+        process.env.REFRESH_TOKEN as string,
+        {
+          expiresIn: "3d",
+        }
+      );
+
+      res.cookie("access_token", accessToken, accessTokenOptions);
+      res.cookie("refresh_token", refreshToken, refreshTokenOptions);
+
+      res.status(200).json({
+        status: "success",
+        accessToken,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// GET USER INFORMATION FUNCTION
+export const getUserInfo = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?._id;
+      getUserByID(userId, res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// SOCCIAL AUTHENTICATION FUNCTION
+
