@@ -18,4 +18,23 @@ interface ILoginRequest {
   password: string;
 }
 
-export { IRegistrationBody, IActivationRequest, ILoginRequest };
+// SOCCIAL AUTHENTICATION INTERFACE [ USER ]
+interface ISocialAuthBody {
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+// UPDATE USER INFORMATION INTERFACE [ USER ]
+interface IUpdateUserInfo {
+  name: string;
+  email: string;
+}
+
+export {
+  IRegistrationBody,
+  IActivationRequest,
+  ILoginRequest,
+  ISocialAuthBody,
+  IUpdateUserInfo,
+};

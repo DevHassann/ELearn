@@ -10,6 +10,8 @@ import {
   IRegistrationBody,
   IActivationRequest,
   ILoginRequest,
+  ISocialAuthBody,
+  IUpdateUserInfo,
 } from "../interfaces/api.interfaces";
 import { IUser } from "../interfaces/model.interfaces";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -17,6 +19,14 @@ import { sendToken } from "../utils/SendJwtToken";
 import { redis } from "../databases/redisDatabase";
 import { accessTokenOptions, refreshTokenOptions } from "../utils/Tokens";
 import { getUserByID } from "../services/user.servies";
+import {
+  EmptyCredentialsMessage,
+  ExistedEmailMessage,
+  ExistedUserMessage,
+  InvalidActivationCodeMessage,
+  InvalidCredentialsMessage,
+  RefreshTokenFailedMessage,
+} from "../messages/api.messages";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
@@ -29,7 +39,7 @@ export const registrationUser = CatchAsyncErrors(
 
       const isEmailExist = await userModel.findOne({ email });
       if (isEmailExist) {
-        return next(new ErrorHandler("Email already exists", 400));
+        return next(new ErrorHandler(ExistedEmailMessage, 400));
       }
 
       const user: IRegistrationBody = {
@@ -82,7 +92,7 @@ export const activateUser = CatchAsyncErrors(
       ) as { user: IUser; activationCode: string };
 
       if (newUser.activationCode !== activation_code) {
-        return next(new ErrorHandler("Invalid activation code", 400));
+        return next(new ErrorHandler(InvalidActivationCodeMessage, 400));
       }
 
       const { name, email, password } = newUser.user;
@@ -90,7 +100,7 @@ export const activateUser = CatchAsyncErrors(
       const existUser = await userModel.findOne({ email });
 
       if (existUser) {
-        return next(new ErrorHandler("User already exists", 400));
+        return next(new ErrorHandler(ExistedUserMessage, 400));
       }
 
       const user = await userModel.create({
@@ -115,19 +125,17 @@ export const loginUser = CatchAsyncErrors(
       const { email, password } = req.body as ILoginRequest;
 
       if (!email || !password) {
-        return next(
-          new ErrorHandler("Please enter your email and password", 400)
-        );
+        return next(new ErrorHandler(EmptyCredentialsMessage, 400));
       }
 
       const user = await userModel.findOne({ email }).select("+password");
       if (!user) {
-        return next(new ErrorHandler("Invalid email or password", 400));
+        return next(new ErrorHandler(InvalidCredentialsMessage, 400));
       }
 
       const isPasswordMatch = await user.comparePassword(password);
       if (!isPasswordMatch) {
-        return next(new ErrorHandler("Invalid email or password", 400));
+        return next(new ErrorHandler(InvalidCredentialsMessage, 400));
       }
 
       sendToken(user, 200, res);
@@ -168,12 +176,12 @@ export const updateAccessToken = CatchAsyncErrors(
         process.env.REFRESH_TOKEN as string
       ) as JwtPayload;
       if (!decoded) {
-        return next(new ErrorHandler("Could not refresh token", 400));
+        return next(new ErrorHandler(RefreshTokenFailedMessage, 400));
       }
 
       const session = await redis.get(decoded.id as string);
       if (!session) {
-        return next(new ErrorHandler("Could not refresh token", 400));
+        return next(new ErrorHandler(RefreshTokenFailedMessage, 400));
       }
 
       const user = JSON.parse(session);
@@ -192,6 +200,8 @@ export const updateAccessToken = CatchAsyncErrors(
           expiresIn: "3d",
         }
       );
+
+      req.user = user;
 
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
@@ -218,5 +228,52 @@ export const getUserInfo = CatchAsyncErrors(
   }
 );
 
-// SOCCIAL AUTHENTICATION FUNCTION
+// SOCIAL AUTHENTICATION FUNCTION
+export const socialAuth = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, name, avatar } = req.body as ISocialAuthBody;
 
+      const user = await userModel.findOne({ email });
+      if (!user) {
+        const newUser = await userModel.create({ email, name, avatar });
+        sendToken(newUser, 200, res);
+      } else {
+        sendToken(user, 200, res);
+      }
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// UPDATE USER INFORMATION FUNCTION
+export const updateUserInfo = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { name, email } = req.body as IUpdateUserInfo;
+      const userId = req.user?._id;
+      const user = await userModel.findById(userId);
+
+      if (email && user) {
+        const isEmailExist = await userModel.findOne({ email });
+        if (isEmailExist) {
+          return next(new ErrorHandler(ExistedEmailMessage, 400));
+        }
+        user.email = email;
+      }
+      if (name && user) {
+        user.name = name;
+      }
+
+      await user?.save();
+      await redis.set(userId, JSON.stringify(user));
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
