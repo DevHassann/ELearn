@@ -25,10 +25,21 @@ interface ISocialAuthBody {
   avatar: string;
 }
 
-// UPDATE USER INFORMATION INTERFACE [ USER ]
+// UPDATE INFORMATION INTERFACE [ USER ]
 interface IUpdateUserInfo {
   name: string;
   email: string;
+}
+
+// UPDATE PASSWORD INTERFACE [ USER ]
+interface IUpdatePassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+// UPDATE PROFILE PICTURE INTERFACE [ USER ]
+interface IUpdateProfilePicture {
+  avatar: string;
 }
 
 export {
@@ -37,4 +48,6 @@ export {
   ILoginRequest,
   ISocialAuthBody,
   IUpdateUserInfo,
+  IUpdatePassword,
+  IUpdateProfilePicture,
 };

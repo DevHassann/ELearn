@@ -10,6 +10,12 @@ const InvalidCredentialsMessage = "Invalid email or password";
 
 const RefreshTokenFailedMessage = "Could not refresh token";
 
+const InvalidOldPasswordMessage = "Invalid old password";
+
+const InvalidUserMessage = "Invalid user";
+
+const EmptyPassowrdMessage = "Please enter old and new password";
+
 export {
   ExistedEmailMessage,
   InvalidActivationCodeMessage,
@@ -17,4 +23,7 @@ export {
   EmptyCredentialsMessage,
   InvalidCredentialsMessage,
   RefreshTokenFailedMessage,
+  InvalidOldPasswordMessage,
+  InvalidUserMessage,
+  EmptyPassowrdMessage,
 };

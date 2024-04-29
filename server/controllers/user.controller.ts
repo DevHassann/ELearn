@@ -12,6 +12,7 @@ import {
   ILoginRequest,
   ISocialAuthBody,
   IUpdateUserInfo,
+  IUpdatePassword,
 } from "../interfaces/api.interfaces";
 import { IUser } from "../interfaces/model.interfaces";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -21,12 +22,16 @@ import { accessTokenOptions, refreshTokenOptions } from "../utils/Tokens";
 import { getUserByID } from "../services/user.servies";
 import {
   EmptyCredentialsMessage,
+  EmptyPassowrdMessage,
   ExistedEmailMessage,
   ExistedUserMessage,
   InvalidActivationCodeMessage,
   InvalidCredentialsMessage,
+  InvalidOldPasswordMessage,
+  InvalidUserMessage,
   RefreshTokenFailedMessage,
 } from "../messages/api.messages";
+import cloudinary from "cloudinary";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
@@ -264,6 +269,85 @@ export const updateUserInfo = CatchAsyncErrors(
       }
       if (name && user) {
         user.name = name;
+      }
+
+      await user?.save();
+      await redis.set(userId, JSON.stringify(user));
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// UPDATE USER PASSWORD FUNCTION
+export const updatePassword = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { oldPassword, newPassword } = req.body as IUpdatePassword;
+      if (!oldPassword || !newPassword) {
+        return next(new ErrorHandler(EmptyPassowrdMessage, 400));
+      }
+
+      const user = await userModel.findById(req.user?._id).select("+password");
+      if (user?.password === undefined) {
+        return next(new ErrorHandler(InvalidUserMessage, 400));
+      }
+
+      const isPasswordMatch = await user?.comparePassword(oldPassword);
+      if (!isPasswordMatch) {
+        return next(new ErrorHandler(InvalidOldPasswordMessage, 400));
+      }
+
+      user.password = newPassword;
+      await user.save();
+      await redis.set(req.user?._id, JSON.stringify(user));
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// UPDATE PROFILE PICTURE FUNCION
+export const updateProfilePicture = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { avatar } = req.body;
+      const userId = req.user?._id;
+      const user = await userModel.findById(userId);
+
+      if (avatar && user) {
+        if (user?.avatar?.public_id) {
+          // DELETE THE OLD IMAGE
+          await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+          // UPDATE IT WITH NEW IMAGE
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        } else {
+          // IF NO IMAGE SIMPLY JUST PUT THE IMAGE
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        }
       }
 
       await user?.save();
