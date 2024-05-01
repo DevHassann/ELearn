@@ -19,7 +19,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { sendToken } from "../utils/SendJwtToken";
 import { redis } from "../databases/redisDatabase";
 import { accessTokenOptions, refreshTokenOptions } from "../utils/Tokens";
-import { getUserByID } from "../services/user.servies";
+import { getUserByID } from "../services/user.service";
 import {
   EmptyCredentialsMessage,
   EmptyPassowrdMessage,

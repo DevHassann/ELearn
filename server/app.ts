@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { testRouteHandler, unknownRouteHandler } from "./routes/others.route";
 import { ErrorMiddleware } from "./middlewares/Error";
 import userRouter from "./routes/user.route";
+import courseRouter from "./routes/course.route";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
@@ -26,6 +27,7 @@ app.use(
 
 // ROUTES
 app.use("/api/v1", userRouter);
+app.use("/api/v1", courseRouter);
 
 // TESTING ROUTE
 app.get("/test", testRouteHandler);

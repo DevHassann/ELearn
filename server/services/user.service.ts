@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { redis } from "../databases/redisDatabase";
 
-// GET USER BY ID
+// GET USER BY ID FUNCTION
 export const getUserByID = async (id: string, res: Response) => {
   const userJson = await redis.get(id);
   if (userJson) {

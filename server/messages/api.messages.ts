@@ -16,6 +16,8 @@ const InvalidUserMessage = "Invalid user";
 
 const EmptyPassowrdMessage = "Please enter old and new password";
 
+const NotEligibleToAccessMessage = "You are not eligible to access this course";
+
 export {
   ExistedEmailMessage,
   InvalidActivationCodeMessage,
@@ -26,4 +28,5 @@ export {
   InvalidOldPasswordMessage,
   InvalidUserMessage,
   EmptyPassowrdMessage,
+  NotEligibleToAccessMessage,
 };
