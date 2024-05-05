@@ -1,5 +1,5 @@
 // USER REGISTER INTERFACE [ USER ]
-interface IRegistrationBody {
+export interface IRegistrationBody {
   name: string;
   email: string;
   password: string;
@@ -7,47 +7,52 @@ interface IRegistrationBody {
 }
 
 // ACTIVATE USER INTERFACE [ USER ]
-interface IActivationRequest {
+export interface IActivationRequest {
   activation_token: string;
   activation_code: string;
 }
 
 // LOGIN USER INTERFACE [ USER ]
-interface ILoginRequest {
+export interface ILoginRequest {
   email: string;
   password: string;
 }
 
 // SOCCIAL AUTHENTICATION INTERFACE [ USER ]
-interface ISocialAuthBody {
+export interface ISocialAuthBody {
   name: string;
   email: string;
   avatar: string;
 }
 
 // UPDATE INFORMATION INTERFACE [ USER ]
-interface IUpdateUserInfo {
+export interface IUpdateUserInfo {
   name: string;
   email: string;
 }
 
 // UPDATE PASSWORD INTERFACE [ USER ]
-interface IUpdatePassword {
+export interface IUpdatePassword {
   oldPassword: string;
   newPassword: string;
 }
 
 // UPDATE PROFILE PICTURE INTERFACE [ USER ]
-interface IUpdateProfilePicture {
+export interface IUpdateProfilePicture {
   avatar: string;
 }
 
-export {
-  IRegistrationBody,
-  IActivationRequest,
-  ILoginRequest,
-  ISocialAuthBody,
-  IUpdateUserInfo,
-  IUpdatePassword,
-  IUpdateProfilePicture,
-};
+// ADD QUESTION INTERFACE [ COURSE ]
+export interface IQuestionData {
+  question: string;
+  courseId: string;
+  contentId: string;
+}
+
+// ADD ANSWER INTERFACE [ COURSE ]
+export interface IAnswerData {
+  answer: string;
+  courseId: string;
+  contentId: string;
+  questionId: string;
+}

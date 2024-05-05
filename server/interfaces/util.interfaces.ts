@@ -1,5 +1,5 @@
 // SEND MAIL INTERFACE
-interface EmailOptions {
+export interface EmailOptions {
   email: string;
   subject: string;
   template: string;
@@ -7,18 +7,16 @@ interface EmailOptions {
 }
 
 // ACTIVATION TOKEN INTERFACE
-interface IActivationToken {
+export interface IActivationToken {
   token: string;
   activationCode: string;
 }
 
 // TOKEN OPTIONS INTERFACE
-interface ITokenOptions {
+export interface ITokenOptions {
   expires: Date;
   maxAge: number;
   httpOnly: boolean;
   sameSite: "lax" | "strict" | "none" | undefined;
   secure?: boolean;
 }
-
-export { EmailOptions, IActivationToken, ITokenOptions };

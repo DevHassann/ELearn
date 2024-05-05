@@ -1,32 +1,23 @@
-const ExistedEmailMessage = "Email already exists";
+export const ExistedEmailMessage = "Email already exists";
 
-const InvalidActivationCodeMessage = "Invalid activation code";
+export const InvalidActivationCodeMessage = "Invalid activation code";
 
-const ExistedUserMessage = "User already exists";
+export const ExistedUserMessage = "User already exists";
 
-const EmptyCredentialsMessage = "Please enter your email and password";
+export const EmptyCredentialsMessage = "Please enter your email and password";
 
-const InvalidCredentialsMessage = "Invalid email or password";
+export const InvalidCredentialsMessage = "Invalid email or password";
 
-const RefreshTokenFailedMessage = "Could not refresh token";
+export const RefreshTokenFailedMessage = "Could not refresh token";
 
-const InvalidOldPasswordMessage = "Invalid old password";
+export const InvalidOldPasswordMessage = "Invalid old password";
 
-const InvalidUserMessage = "Invalid user";
+export const InvalidUserMessage = "Invalid user";
 
-const EmptyPassowrdMessage = "Please enter old and new password";
+export const EmptyPassowrdMessage = "Please enter old and new password";
 
-const NotEligibleToAccessMessage = "You are not eligible to access this course";
+export const NotEligibleToAccessMessage = "You are not eligible to access this course";
 
-export {
-  ExistedEmailMessage,
-  InvalidActivationCodeMessage,
-  ExistedUserMessage,
-  EmptyCredentialsMessage,
-  InvalidCredentialsMessage,
-  RefreshTokenFailedMessage,
-  InvalidOldPasswordMessage,
-  InvalidUserMessage,
-  EmptyPassowrdMessage,
-  NotEligibleToAccessMessage,
-};
+export const InvalidContentIDMessage = "Invalid content ID"; 
+
+export const InvalidQuestionIDMessage = "Invalid content ID"; 

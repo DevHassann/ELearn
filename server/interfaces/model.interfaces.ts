@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 
 // USER MODEL INTERAFCE
-interface IUser extends Document {
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
@@ -18,28 +18,28 @@ interface IUser extends Document {
 }
 
 // COMMENT INTERAFCE - COURSE MODEL
-interface IComment extends Document {
-  user: object;
-  comment: string;
-  commentReplies?: IComment[];
+export interface IQuestion extends Document {
+  user: IUser;
+  question: string;
+  questionReplies: IQuestion[];
 }
 
 // REVIEW INTERAFCE - COURSE MODEL
-interface IReview extends Document {
+export interface IReview extends Document {
   user: object;
   rating: number;
   comment: string;
-  commentReplies: IComment[];
+  commentReplies: IQuestion[];
 }
 
 // LINK INTERAFCE - COURSE MODEL
-interface ILink extends Document {
+export interface ILink extends Document {
   title: string;
   url: string;
 }
 
 // COURSE DATA INTERAFCE - COURSE MODEL
-interface ICourseData extends Document {
+export interface ICourseData extends Document {
   title: string;
   description: string;
   videoUrl: string;
@@ -48,11 +48,11 @@ interface ICourseData extends Document {
   videoPlayer: string;
   links: ILink[];
   suggestion: string;
-  questions: IComment[];
+  questions: IQuestion[];
 }
 
 // COURSE MODEL INTERAFCE
-interface ICourse extends Document {
+export interface ICourse extends Document {
   name: string;
   description: string;
   price: number;
@@ -68,5 +68,3 @@ interface ICourse extends Document {
   ratings?: number;
   purchased?: number;
 }
-
-export { IUser, IComment, IReview, ILink, ICourseData, ICourse };

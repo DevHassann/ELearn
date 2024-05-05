@@ -1,9 +1,9 @@
 import mongoose, { Model, Schema } from "mongoose";
 import {
-  IComment,
   ICourse,
   ICourseData,
   ILink,
+  IQuestion,
   IReview,
 } from "../interfaces/model.interfaces";
 
@@ -21,10 +21,10 @@ const linkSchema = new Schema<ILink>({
   url: String,
 });
 
-const commentSchema = new Schema<IComment>({
+const questionSchema = new Schema<IQuestion>({
   user: Object,
-  comment: String,
-  commentReplies: [Object],
+  question: String,
+  questionReplies: [Object],
 });
 
 const courseDataSchema = new Schema<ICourseData>({
@@ -36,7 +36,7 @@ const courseDataSchema = new Schema<ICourseData>({
   videoPlayer: String,
   links: [linkSchema],
   suggestion: String,
-  questions: [commentSchema],
+  questions: [questionSchema],
 });
 
 const courseSchema = new Schema<ICourse>({

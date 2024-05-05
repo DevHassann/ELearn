@@ -330,7 +330,7 @@ export const updateProfilePicture = CatchAsyncErrors(
           await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
           // UPDATE IT WITH NEW IMAGE
           const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-            folder: "avatars",
+            folder: "Elearn Avatars",
             width: 150,
           });
           user.avatar = {
@@ -340,7 +340,7 @@ export const updateProfilePicture = CatchAsyncErrors(
         } else {
           // IF NO IMAGE SIMPLY JUST PUT THE IMAGE
           const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-            folder: "avatars",
+            folder: "Elearn Avatars",
             width: 150,
           });
           user.avatar = {
