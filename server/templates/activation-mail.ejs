@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ELearn Activation Email</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
+    <title>ELearn Activation Email</title>
     <style type="text/css">
-      /* BASE */
-      body {
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+      * {
         margin: 0;
         padding: 0;
-        min-width: 100%;
+        box-sizing: border-box;
         font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        min-width: 100%;
         font-size: 16px;
         line-height: 1.5;
         background-color: #fafafa;
         color: #222222;
       }
 
-      a {
-        color: #000;
-        text-decoration: none;
+      .activation-email-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
       }
 
-      h1 {
+      .activation-email-header {
+        background-color: #4991fc;
+        padding: 24px;
+        color: #fff;
+      }
+
+      .activation-email-heading {
         font-size: 24px;
         font-weight: 700;
         line-height: 1.25;
@@ -37,78 +42,59 @@
         text-align: center;
       }
 
-      p {
-        margin-top: 0;
-        margin-bottom: 24px;
-      }
-
-      table td {
-        vertical-align: top;
-      }
-
-      /* LAYOUT */
-      .email-wrapper {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-
-      .email-header {
-        background-color: #494af8;
-        padding: 24px;
-        color: #fff;
-      }
-
-      .email-body {
+      .activation-email-body {
         padding: 24px;
         background-color: #fff;
       }
 
-      .email-footer {
+      .activation-email-text01 {
+        margin-top: 0;
+        margin-bottom: 24px;
+      }
+
+      .activation-email-code {
+        color: #4991fc;
+        margin-bottom: 24px;
+      }
+
+      .activation-email-footer {
         background-color: #f6f6f6;
         padding: 24px;
       }
 
-      /* BUTTONS */
-      .button {
-        display: inline-block;
-        background-color: #494af8;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-        text-align: center;
+      .activation-email-link {
+        color: #4991fc;
         text-decoration: none;
-        padding: 12px 24px;
-        border-radius: 4px;
       }
     </style>
   </head>
 
   <body>
-    <div class="email-wrapper">
-      <div class="email-header">
-        <h1>Welcome to ELearn</h1>
+    <div class="activation-email-wrapper">
+      <div class="activation-email-header">
+        <h1 class="activation-email-heading">Welcome to ELearn</h1>
       </div>
 
-      <div class="email-body">
-        <p>Hello <%= user.name %></p>
-        <p>
+      <div class="activation-email-body">
+        <p class="activation-email-text01">Hello <%= user.name %>,</p>
+        <p class="activation-email-text01">
           Thankyou, for registering with ELearn. To acctivate your acccount,
           please use the following activation code:
         </p>
-        <h2><%= activationCode %></h2>
-        <p>
+        <h2 class="activation-email-code"><%= activationCode %></h2>
+        <p class="activation-email-text01">
           Please enter this code on the activation page within the next 5
-          minutes.
-        </p>
-        <p>
-          If you did not register for ELearn account, please ignore this email.
+          minutes. If you did not register for ELearn account, please ignore
+          this email.
         </p>
       </div>
 
-      <div class="email-footer">
+      <div class="activation-email-footer">
         <p>
           If you have any questions, please do not hesitate to contact us at
-          <a href="mailto:elearn@gmail.com">elearn@gmail.com</a>
+          <a class="activation-email-link" href="mailto:elearn@gmail.com"
+            >elearn@gmail.com</a
+          >
         </p>
       </div>
     </div>
