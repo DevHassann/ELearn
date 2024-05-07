@@ -14,6 +14,7 @@ const reviewSchema = new Schema<IReview>({
     default: 0,
   },
   comment: String,
+  commentReplies: [Object],
 });
 
 const linkSchema = new Schema<ILink>({

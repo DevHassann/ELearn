@@ -16,8 +16,13 @@ export const InvalidUserMessage = "Invalid user";
 
 export const EmptyPassowrdMessage = "Please enter old and new password";
 
-export const NotEligibleToAccessMessage = "You are not eligible to access this course";
+export const NotEligibleToAccessMessage =
+  "You are not eligible to access this course";
 
-export const InvalidContentIDMessage = "Invalid content ID"; 
+export const InvalidContentIDMessage = "Invalid content ID";
 
-export const InvalidQuestionIDMessage = "Invalid content ID"; 
+export const InvalidQuestionIDMessage = "Invalid content ID";
+
+export const CourseNotFoundMessage = "Course not found";
+
+export const ReviewNotFoundMessage = "Review not found";

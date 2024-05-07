@@ -17,28 +17,28 @@ export interface IUser extends Document {
   SignRefreshToken: () => string;
 }
 
-// COMMENT INTERAFCE - COURSE MODEL
+// COMMENT INTERAFCE - [ COURSE MODEL 0.1 ]
 export interface IQuestion extends Document {
   user: IUser;
   question: string;
   questionReplies: IQuestion[];
 }
 
-// REVIEW INTERAFCE - COURSE MODEL
+// REVIEW INTERAFCE - [ COURSE MODEL 0.2 ]
 export interface IReview extends Document {
-  user: object;
+  user: IUser;
   rating: number;
   comment: string;
-  commentReplies: IQuestion[];
+  commentReplies?: IQuestion[];
 }
 
-// LINK INTERAFCE - COURSE MODEL
+// LINK INTERAFCE - [ COURSE MODEL 0.3 ]
 export interface ILink extends Document {
   title: string;
   url: string;
 }
 
-// COURSE DATA INTERAFCE - COURSE MODEL
+// COURSE DATA INTERAFCE - [ COURSE MODEL 0.4 ]
 export interface ICourseData extends Document {
   title: string;
   description: string;
@@ -67,4 +67,19 @@ export interface ICourse extends Document {
   courseData: ICourseData[];
   ratings?: number;
   purchased?: number;
+}
+
+// ORDER MODEL INTERAFCE
+export interface IOrder extends Document {
+  courseId: string;
+  userId: string;
+  payment_info: object;
+}
+
+// NOTIFICATION MODEL INTERAFCE
+export interface INotification extends Document {
+  title: string;
+  message: string;
+  status: string;
+  userId: string;
 }

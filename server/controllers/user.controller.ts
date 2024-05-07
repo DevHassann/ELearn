@@ -44,7 +44,7 @@ export const registrationUser = CatchAsyncErrors(
 
       const isEmailExist = await userModel.findOne({ email });
       if (isEmailExist) {
-        return next(new ErrorHandler(ExistedEmailMessage, 400));
+        return next(new ErrorHandler(ExistedEmailMessage, 404));
       }
 
       const user: IRegistrationBody = {
@@ -79,7 +79,7 @@ export const registrationUser = CatchAsyncErrors(
         return next(new ErrorHandler(error.message, 400));
       }
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -97,7 +97,7 @@ export const activateUser = CatchAsyncErrors(
       ) as { user: IUser; activationCode: string };
 
       if (newUser.activationCode !== activation_code) {
-        return next(new ErrorHandler(InvalidActivationCodeMessage, 400));
+        return next(new ErrorHandler(InvalidActivationCodeMessage, 404));
       }
 
       const { name, email, password } = newUser.user;
@@ -105,7 +105,7 @@ export const activateUser = CatchAsyncErrors(
       const existUser = await userModel.findOne({ email });
 
       if (existUser) {
-        return next(new ErrorHandler(ExistedUserMessage, 400));
+        return next(new ErrorHandler(ExistedUserMessage, 404));
       }
 
       const user = await userModel.create({
@@ -118,7 +118,7 @@ export const activateUser = CatchAsyncErrors(
         success: true,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -130,22 +130,22 @@ export const loginUser = CatchAsyncErrors(
       const { email, password } = req.body as ILoginRequest;
 
       if (!email || !password) {
-        return next(new ErrorHandler(EmptyCredentialsMessage, 400));
+        return next(new ErrorHandler(EmptyCredentialsMessage, 404));
       }
 
       const user = await userModel.findOne({ email }).select("+password");
       if (!user) {
-        return next(new ErrorHandler(InvalidCredentialsMessage, 400));
+        return next(new ErrorHandler(InvalidCredentialsMessage, 404));
       }
 
       const isPasswordMatch = await user.comparePassword(password);
       if (!isPasswordMatch) {
-        return next(new ErrorHandler(InvalidCredentialsMessage, 400));
+        return next(new ErrorHandler(InvalidCredentialsMessage, 404));
       }
 
       sendToken(user, 200, res);
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -165,7 +165,7 @@ export const logoutUser = CatchAsyncErrors(
         message: "User logged out successfully",
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -181,12 +181,12 @@ export const updateAccessToken = CatchAsyncErrors(
         process.env.REFRESH_TOKEN as string
       ) as JwtPayload;
       if (!decoded) {
-        return next(new ErrorHandler(RefreshTokenFailedMessage, 400));
+        return next(new ErrorHandler(RefreshTokenFailedMessage, 404));
       }
 
       const session = await redis.get(decoded.id as string);
       if (!session) {
-        return next(new ErrorHandler(RefreshTokenFailedMessage, 400));
+        return next(new ErrorHandler(RefreshTokenFailedMessage, 404));
       }
 
       const user = JSON.parse(session);
@@ -216,7 +216,7 @@ export const updateAccessToken = CatchAsyncErrors(
         accessToken,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -228,7 +228,7 @@ export const getUserInfo = CatchAsyncErrors(
       const userId = req.user?._id;
       getUserByID(userId, res);
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -247,7 +247,7 @@ export const socialAuth = CatchAsyncErrors(
         sendToken(user, 200, res);
       }
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -263,7 +263,7 @@ export const updateUserInfo = CatchAsyncErrors(
       if (email && user) {
         const isEmailExist = await userModel.findOne({ email });
         if (isEmailExist) {
-          return next(new ErrorHandler(ExistedEmailMessage, 400));
+          return next(new ErrorHandler(ExistedEmailMessage, 404));
         }
         user.email = email;
       }
@@ -278,7 +278,7 @@ export const updateUserInfo = CatchAsyncErrors(
         user,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -289,17 +289,17 @@ export const updatePassword = CatchAsyncErrors(
     try {
       const { oldPassword, newPassword } = req.body as IUpdatePassword;
       if (!oldPassword || !newPassword) {
-        return next(new ErrorHandler(EmptyPassowrdMessage, 400));
+        return next(new ErrorHandler(EmptyPassowrdMessage, 404));
       }
 
       const user = await userModel.findById(req.user?._id).select("+password");
       if (user?.password === undefined) {
-        return next(new ErrorHandler(InvalidUserMessage, 400));
+        return next(new ErrorHandler(InvalidUserMessage, 404));
       }
 
       const isPasswordMatch = await user?.comparePassword(oldPassword);
       if (!isPasswordMatch) {
-        return next(new ErrorHandler(InvalidOldPasswordMessage, 400));
+        return next(new ErrorHandler(InvalidOldPasswordMessage, 404));
       }
 
       user.password = newPassword;
@@ -311,7 +311,7 @@ export const updatePassword = CatchAsyncErrors(
         user,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
@@ -357,7 +357,7 @@ export const updateProfilePicture = CatchAsyncErrors(
         user,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );

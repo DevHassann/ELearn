@@ -56,3 +56,17 @@ export interface IAnswerData {
   contentId: string;
   questionId: string;
 }
+
+// ADD REVIEW INTERFACE [ COURSE ]
+export interface IAddReviewData {
+  review: string;
+  rating: number;
+  userId: string;
+}
+
+// ADD REPLY TO REVIEW [ COURSE ]
+export interface IAddReplyReviewData {
+  comment: string;
+  courseId: string;
+  reviewId: string;
+}
