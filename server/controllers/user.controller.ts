@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import userModel from "../models/user.model";
+import UserModel from "../models/user.model";
 import ejs from "ejs";
 import path from "path";
 import ErrorHandler from "../utils/ErrorHandler";
@@ -42,9 +42,9 @@ export const registrationUser = CatchAsyncErrors(
     try {
       const { name, email, password } = req.body;
 
-      const isEmailExist = await userModel.findOne({ email });
+      const isEmailExist = await UserModel.findOne({ email });
       if (isEmailExist) {
-        return next(new ErrorHandler(ExistedEmailMessage, 404));
+        return next(new ErrorHandler(ExistedEmailMessage, 400));
       }
 
       const user: IRegistrationBody = {
@@ -97,18 +97,18 @@ export const activateUser = CatchAsyncErrors(
       ) as { user: IUser; activationCode: string };
 
       if (newUser.activationCode !== activation_code) {
-        return next(new ErrorHandler(InvalidActivationCodeMessage, 404));
+        return next(new ErrorHandler(InvalidActivationCodeMessage, 400));
       }
 
       const { name, email, password } = newUser.user;
 
-      const existUser = await userModel.findOne({ email });
+      const existUser = await UserModel.findOne({ email });
 
       if (existUser) {
-        return next(new ErrorHandler(ExistedUserMessage, 404));
+        return next(new ErrorHandler(ExistedUserMessage, 400));
       }
 
-      const user = await userModel.create({
+      const user = await UserModel.create({
         name,
         email,
         password,
@@ -130,17 +130,17 @@ export const loginUser = CatchAsyncErrors(
       const { email, password } = req.body as ILoginRequest;
 
       if (!email || !password) {
-        return next(new ErrorHandler(EmptyCredentialsMessage, 404));
+        return next(new ErrorHandler(EmptyCredentialsMessage, 400));
       }
 
-      const user = await userModel.findOne({ email }).select("+password");
+      const user = await UserModel.findOne({ email }).select("+password");
       if (!user) {
-        return next(new ErrorHandler(InvalidCredentialsMessage, 404));
+        return next(new ErrorHandler(InvalidCredentialsMessage, 400));
       }
 
       const isPasswordMatch = await user.comparePassword(password);
       if (!isPasswordMatch) {
-        return next(new ErrorHandler(InvalidCredentialsMessage, 404));
+        return next(new ErrorHandler(InvalidCredentialsMessage, 400));
       }
 
       sendToken(user, 200, res);
@@ -181,12 +181,12 @@ export const updateAccessToken = CatchAsyncErrors(
         process.env.REFRESH_TOKEN as string
       ) as JwtPayload;
       if (!decoded) {
-        return next(new ErrorHandler(RefreshTokenFailedMessage, 404));
+        return next(new ErrorHandler(RefreshTokenFailedMessage, 400));
       }
 
       const session = await redis.get(decoded.id as string);
       if (!session) {
-        return next(new ErrorHandler(RefreshTokenFailedMessage, 404));
+        return next(new ErrorHandler(RefreshTokenFailedMessage, 400));
       }
 
       const user = JSON.parse(session);
@@ -239,9 +239,9 @@ export const socialAuth = CatchAsyncErrors(
     try {
       const { email, name, avatar } = req.body as ISocialAuthBody;
 
-      const user = await userModel.findOne({ email });
+      const user = await UserModel.findOne({ email });
       if (!user) {
-        const newUser = await userModel.create({ email, name, avatar });
+        const newUser = await UserModel.create({ email, name, avatar });
         sendToken(newUser, 200, res);
       } else {
         sendToken(user, 200, res);
@@ -258,12 +258,12 @@ export const updateUserInfo = CatchAsyncErrors(
     try {
       const { name, email } = req.body as IUpdateUserInfo;
       const userId = req.user?._id;
-      const user = await userModel.findById(userId);
+      const user = await UserModel.findById(userId);
 
       if (email && user) {
-        const isEmailExist = await userModel.findOne({ email });
+        const isEmailExist = await UserModel.findOne({ email });
         if (isEmailExist) {
-          return next(new ErrorHandler(ExistedEmailMessage, 404));
+          return next(new ErrorHandler(ExistedEmailMessage, 400));
         }
         user.email = email;
       }
@@ -289,17 +289,17 @@ export const updatePassword = CatchAsyncErrors(
     try {
       const { oldPassword, newPassword } = req.body as IUpdatePassword;
       if (!oldPassword || !newPassword) {
-        return next(new ErrorHandler(EmptyPassowrdMessage, 404));
+        return next(new ErrorHandler(EmptyPassowrdMessage, 400));
       }
 
-      const user = await userModel.findById(req.user?._id).select("+password");
+      const user = await UserModel.findById(req.user?._id).select("+password");
       if (user?.password === undefined) {
-        return next(new ErrorHandler(InvalidUserMessage, 404));
+        return next(new ErrorHandler(InvalidUserMessage, 400));
       }
 
       const isPasswordMatch = await user?.comparePassword(oldPassword);
       if (!isPasswordMatch) {
-        return next(new ErrorHandler(InvalidOldPasswordMessage, 404));
+        return next(new ErrorHandler(InvalidOldPasswordMessage, 400));
       }
 
       user.password = newPassword;
@@ -322,7 +322,7 @@ export const updateProfilePicture = CatchAsyncErrors(
     try {
       const { avatar } = req.body;
       const userId = req.user?._id;
-      const user = await userModel.findById(userId);
+      const user = await UserModel.findById(userId);
 
       if (avatar && user) {
         if (user?.avatar?.public_id) {

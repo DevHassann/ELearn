@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { testRouteHandler, unknownRouteHandler } from "./routes/others.route";
+import { testRouteHandler, unknownRouteHandler } from "./routes/other.routes";
 import { ErrorMiddleware } from "./middlewares/Error";
-import userRouter from "./routes/user.route";
-import courseRouter from "./routes/course.route";
+import userRouter from "./routes/user.routes";
+import courseRouter from "./routes/course.routes";
+import orderRouter from "./routes/order.routes";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
@@ -26,8 +27,7 @@ app.use(
 );
 
 // ROUTES
-app.use("/api/v1", userRouter);
-app.use("/api/v1", courseRouter);
+app.use("/api/v1", userRouter, courseRouter, orderRouter);
 
 // TESTING ROUTE
 app.get("/test", testRouteHandler);

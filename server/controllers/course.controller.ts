@@ -158,7 +158,7 @@ export const getCourseByUser = CatchAsyncErrors(
       );
 
       if (!courseExists) {
-        return next(new ErrorHandler(NotEligibleToAccessMessage, 404));
+        return next(new ErrorHandler(NotEligibleToAccessMessage, 400));
       }
 
       const course = await CourseModel.findById(courseId);
@@ -182,14 +182,14 @@ export const addQuestion = CatchAsyncErrors(
       const course = await CourseModel.findById(courseId);
 
       if (!mongoose.Types.ObjectId.isValid(courseId)) {
-        return next(new ErrorHandler(InvalidContentIDMessage, 404));
+        return next(new ErrorHandler(InvalidContentIDMessage, 400));
       }
 
       const courseContent = course?.courseData?.find((item: any) =>
         item._id.equals(contentId)
       );
       if (!courseContent) {
-        return next(new ErrorHandler(InvalidContentIDMessage, 404));
+        return next(new ErrorHandler(InvalidContentIDMessage, 400));
       }
 
       // CREATE A NEW QUESTION OBJECT
@@ -222,21 +222,21 @@ export const addAnswer = CatchAsyncErrors(
     const course = await CourseModel.findById(courseId);
 
     if (!mongoose.Types.ObjectId.isValid(courseId)) {
-      return next(new ErrorHandler(InvalidContentIDMessage, 404));
+      return next(new ErrorHandler(InvalidContentIDMessage, 400));
     }
 
     const courseContent = course?.courseData?.find((item: any) =>
       item._id.equals(contentId)
     );
     if (!courseContent) {
-      return next(new ErrorHandler(InvalidContentIDMessage, 404));
+      return next(new ErrorHandler(InvalidContentIDMessage, 400));
     }
 
     const question = courseContent?.questions?.find((item: any) =>
       item._id.equals(questionId)
     );
     if (!question) {
-      return next(new ErrorHandler(InvalidQuestionIDMessage, 404));
+      return next(new ErrorHandler(InvalidQuestionIDMessage, 400));
     }
 
     // CREATE A NEW ANSWER OBJECT
@@ -297,7 +297,7 @@ export const addReview = CatchAsyncErrors(
         (course: any) => course._id.toString() === courseId.toString()
       );
       if (!courseExists) {
-        return next(new ErrorHandler(NotEligibleToAccessMessage, 404));
+        return next(new ErrorHandler(NotEligibleToAccessMessage, 400));
       }
 
       const course = await CourseModel.findById(courseId);
