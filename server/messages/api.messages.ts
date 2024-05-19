@@ -28,3 +28,5 @@ export const CourseNotFoundMessage = "Course not found";
 export const ReviewNotFoundMessage = "Review not found";
 
 export const AlreadyPurchasedMessage = "You have already purchased this course";
+
+export const NotificationNotFoundMessage = "Notification not found";

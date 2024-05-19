@@ -22,6 +22,7 @@ import mongoose from "mongoose";
 import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/SendMail";
+import NotificationModel from "../models/notification.model";
 
 // CREATE COURSE FUNCTION
 export const uploadCourse = CatchAsyncErrors(
@@ -202,6 +203,13 @@ export const addQuestion = CatchAsyncErrors(
       // ADD THIS QUESTION TO OUR COURSE CONTENT
       courseContent.questions.push(newQuestion);
 
+      // CREATE A NOTIFICATION
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "New Question Recieved",
+        message: `You have a new question in ${courseContent.title}`,
+      });
+
       // SAVE THE UPADATED COURSE
       await course?.save();
 
@@ -252,6 +260,11 @@ export const addAnswer = CatchAsyncErrors(
 
     if (req.user?._id === question.user._id) {
       // CREATE A NOTIFICATION
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "New Question Reply Recieved",
+        message: `You have a new question reply in ${courseContent.title}`,
+      });
     } else {
       const data = {
         name: question.user.name,
