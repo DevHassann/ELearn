@@ -12,7 +12,7 @@ import {
   AlreadyPurchasedMessage,
   CourseNotFoundMessage,
 } from "../messages/api.messages";
-import { newOrder } from "../services/order.service";
+import { getAllOrderService, newOrderService } from "../services/order.service";
 
 // CREATE ORDER FUNCTION
 export const createOrder = CatchAsyncErrors(
@@ -81,11 +81,22 @@ export const createOrder = CatchAsyncErrors(
         message: `You have a new order from ${course?.name}`,
       });
 
-      course.purchased ? course.purchased += 1 : course.purchased;
+      course.purchased ? (course.purchased += 1) : course.purchased;
 
       await course.save();
 
-      newOrder(data, res, next);
+      newOrderService(data, res, next);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// GET ALL ORDERS FUNCTION - [ ADMIN ]
+export const getOrders = CatchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllOrderService(res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }

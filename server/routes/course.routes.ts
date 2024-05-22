@@ -4,9 +4,11 @@ import {
   addQuestion,
   AddReplyToReview,
   addReview,
+  deleteCourse,
   editCourse,
   getAllCourses,
   getCourseByUser,
+  getCourses,
   getSingleCourse,
   uploadCourse,
 } from "../controllers/course.controller";
@@ -32,7 +34,7 @@ courseRouter.put(
 
 courseRouter.get("/get-course/:id", getSingleCourse);
 
-courseRouter.get("/get-courses", getAllCourses);
+courseRouter.get("/get-all-courses", getAllCourses);
 
 courseRouter.get("/get-course-content/:id", isAuthenticated, getCourseByUser);
 
@@ -47,6 +49,20 @@ courseRouter.put(
   isAuthenticated,
   authorizeRole("admin"),
   AddReplyToReview
+);
+
+courseRouter.get(
+  "/get-courses",
+  isAuthenticated,
+  authorizeRole("admin"),
+  getCourses
+);
+
+courseRouter.delete(
+  "/delete-course/:id",
+  isAuthenticated,
+  authorizeRole("admin"),
+  deleteCourse
 );
 
 export default courseRouter;

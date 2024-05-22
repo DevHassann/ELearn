@@ -25,6 +25,8 @@ export const InvalidQuestionIDMessage = "Invalid content ID";
 
 export const CourseNotFoundMessage = "Course not found";
 
+export const UserNotFoundMessage = "User not found";
+
 export const ReviewNotFoundMessage = "Review not found";
 
 export const AlreadyPurchasedMessage = "You have already purchased this course";
