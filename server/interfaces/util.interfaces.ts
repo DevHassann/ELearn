@@ -1,3 +1,5 @@
+import { Document } from "mongoose";
+
 // SEND MAIL INTERFACE
 export interface EmailOptions {
   email: string;
@@ -19,4 +21,10 @@ export interface ITokenOptions {
   httpOnly: boolean;
   sameSite: "lax" | "strict" | "none" | undefined;
   secure?: boolean;
+}
+
+// ANALYTICS GENERATOR INTERFACE
+export interface MonthData {
+  month: string;
+  count: number;
 }
