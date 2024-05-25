@@ -83,3 +83,32 @@ export interface INotification extends Document {
   status: string;
   userId: string;
 }
+
+// LAYOUT MODEL INTERAFCE [ LAYOUT MODEL 0.1 ]
+export interface FaqItem extends Document {
+  question: string;
+  answer: string;
+}
+
+// LAYOUT MODEL INTERAFCE [ LAYOUT MODEL 0.2 ]
+export interface Category extends Document {
+  title: string;
+}
+
+// LAYOUT MODEL INTERAFCE [ LAYOUT MODEL 0.3 ]
+export interface BannerImage extends Document {
+  public_id: string;
+  url: string;
+}
+
+// LAYOUT MODEL INTERAFCE [ LAYOUT MODEL 0.4 ]
+export interface Layout extends Document {
+  type: string;
+  faq: FaqItem[];
+  categories: Category[];
+  banner: {
+    image: BannerImage;
+    title: string;
+    subTitle: string;
+  };
+}
