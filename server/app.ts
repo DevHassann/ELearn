@@ -8,6 +8,7 @@ import courseRouter from "./routes/course.routes";
 import orderRouter from "./routes/order.routes";
 import notificationRouter from "./routes/notification.routes";
 import analyticsRouter from "./routes/analytics.routes";
+import layoutRouter from "./routes/layout.routes";
 
 // INITIALIZING DOTENV FILE
 require("dotenv").config();
@@ -35,7 +36,8 @@ app.use(
   courseRouter,
   orderRouter,
   notificationRouter,
-  analyticsRouter
+  analyticsRouter,
+  layoutRouter
 );
 
 // TESTING ROUTE
