@@ -6,7 +6,6 @@ import { redis } from "../databases/redisDatabase";
 import {
   AuthenticationMessage,
   InvalidAccessTokenMessage,
-  NotFoundUserMessage,
 } from "../messages/middleware.messages";
 
 // INITIALIZING DOTENV FILE
@@ -31,7 +30,7 @@ export const isAuthenticated = CatchAsyncErrors(
 
     const user = await redis.get(decoded.id);
     if (!user) {
-      return next(new ErrorHandler(NotFoundUserMessage, 400));
+      return next(new ErrorHandler(AuthenticationMessage, 400));
     }
 
     req.user = JSON.parse(user);
