@@ -1,8 +1,8 @@
 import { Poppins, Josefin_Sans } from "next/font/google";
-import { ThemeProvider } from "@/utils/theme-provider";
+import { ThemeProvider } from "@/functions/theme-provider";
 
 import "@/styles/globals.css";
-import "@/styles/include.css";
+import "@/styles/partials.css";
 import "@/styles/animations.css";
 
 // FONTS SPECIFICATIONS

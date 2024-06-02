@@ -1,4 +1,4 @@
-export const navItemsData = [
+export const NavigationPagesData = [
   {
     name: "Home",
     url: "/",

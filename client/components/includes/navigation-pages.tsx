@@ -1,15 +1,15 @@
 import React, { FC } from "react";
-import { NavItemsProps } from "@/properties/utils.properties";
-import { navItemsData } from "@/static/navigation-items-data";
+import { NavigationPagesProps } from "@/properties/components.includes.properties";
+import { NavigationPagesData } from "@/static/navigation-pages-data";
 import Link from "next/link";
 
-const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
+const NavigationPages: FC<NavigationPagesProps> = ({ activeItem, isMobile }) => {
   return (
     <>
       {/* FOR LARGE SCREENS */}
       <div className="hidden 800px:flex">
-        {navItemsData &&
-          navItemsData.map((item, index) => (
+        {NavigationPagesData &&
+          NavigationPagesData.map((item, index) => (
             <Link href={`${item.url}`} key={index} passHref>
               <span
                 className={`${
@@ -24,7 +24,7 @@ const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
           ))}
       </div>
 
-      {/* FOR MOBILE SCREENS */}
+      {/* FOR SMALL SCREENS */}
       {isMobile && (
         <div className="800px:hidden mt-5">
           <div className="w-full text-center py-6">
@@ -34,15 +34,15 @@ const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
               </span>
             </Link>
           </div>
-          {navItemsData &&
-            navItemsData.map((item, index) => (
+          {NavigationPagesData &&
+            NavigationPagesData.map((item, index) => (
               <Link href={`${item.url}`} key={index} passHref>
                 <span
                   className={`${
                     activeItem === index
                       ? "dark:text-[#37a39a] text-[crimson]"
                       : "dark:text-white text-black"
-                  } block py-5 text-[18px] px-6 font-Poppins font-[400]`}
+                  } block py-5 text-[18px] px-6 font-Poppins font-[400] text-center`}
                 >
                   {item.name}
                 </span>
@@ -54,4 +54,4 @@ const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
   );
 };
 
-export default NavItems;
+export default NavigationPages;

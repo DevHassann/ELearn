@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { HeadProps } from "@/interfaces/functions.interface";
+import { MetaDataProps } from "@/properties/functions.properties";
 
-const MetaData: FC<HeadProps> = ({ title, description, keywords }) => {
+const MetaData: FC<MetaDataProps> = ({ title, description, keywords }) => {
   return (
     <>
       <title>{title}</title>
