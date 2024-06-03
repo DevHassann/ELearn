@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { NavigationPagesProps } from "@/properties/components.includes.properties";
-import { NavigationPagesData } from "@/static/navigation-pages-data";
+import { NavigationPagesProps } from "../../properties/components.includes.properties";
+import { NavigationPagesData } from "../../static/navigation-pages-data";
 import Link from "next/link";
 
 const NavigationPages: FC<NavigationPagesProps> = ({ activeItem, isMobile }) => {

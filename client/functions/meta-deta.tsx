@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { MetaDataProps } from "@/properties/functions.properties";
+import { MetaDataProps } from "../properties/functions.properties";
 
 const MetaData: FC<MetaDataProps> = ({ title, description, keywords }) => {
   return (

@@ -1,11 +1,11 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import { LandingPageProps } from "@/properties/pages.properties";
-import MetaData from "@/functions/meta-deta";
+import { LandingPageProps } from "../properties/pages.properties";
+import MetaData from "../functions/meta-deta";
 
-import Header from "@/components/layouts/header";
-import HeroSection from "@/components/routes/home/hero-section";
+import Header from "../components/layouts/header";
+import HeroSection from "../components/routes/home/hero-section";
 
 const Page: FC<LandingPageProps> = (props) => {
   const [open, setOpen] = useState(false);

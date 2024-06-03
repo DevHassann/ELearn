@@ -16,6 +16,19 @@
   }
 }
 
+/* CHROME, SAFARI, EDGE, OPERA */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* FIREFOX */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 * {
   margin: 0;
   padding: 0;

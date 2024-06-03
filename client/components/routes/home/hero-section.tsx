@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import { HomeHeroSectionProps } from "@/properties/components.routes.properties";
+import { HomeHeroSectionProps } from "../../../properties/components.routes.properties";
 import Image from "next/image";
 import Link from "next/link";
 import { BiSearch } from "react-icons/bi";
-import HeroImage from "@/public/background-images/hero-image.png";
-import ClientImage1 from "@/public/images/client-1.jpg";
-import ClientImage2 from "@/public/images/client-2.jpg";
-import ClientImage3 from "@/public/images/client-3.jpg";
+import HeroImage from "../../../public/background-images/hero-image.png";
+import ClientImage1 from "../../../public/images/client-1.jpg";
+import ClientImage2 from "../../../public/images/client-2.jpg";
+import ClientImage3 from "../../../public/images/client-3.jpg";
 
 const HeroSection: FC<HomeHeroSectionProps> = (props) => {
   return (

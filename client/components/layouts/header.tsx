@@ -1,14 +1,24 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import { HeaderProps } from "@/properties/components.layouts.properties";
+import { HeaderProps } from "../../properties/components.layouts.properties";
 import Link from "next/link";
-import NavigationPages from "@/components/includes/navigation-pages";
-import { ThemeSwitcher } from "@/functions/theme-switcher";
+import NavigationPages from "../../components/includes/navigation-pages";
+import { ThemeSwitcher } from "../../functions/theme-switcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
+import CustomModal from "../../functions/custom-modal";
+import Login from "../authentication/login-component";
+import SignUp from "../authentication/sign-up-component";
+import Verification from "../authentication/verification-component";
 
-const Header: FC<HeaderProps> = ({ activeItem, setOpen, route, open }) => {
+const Header: FC<HeaderProps> = ({
+  activeItem,
+  setOpen,
+  route,
+  open,
+  setRoute,
+}) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -109,11 +119,55 @@ const Header: FC<HeaderProps> = ({ activeItem, setOpen, route, open }) => {
 
       {route === "Login" && (
         <>
-          {open && (
-            <>
-              {/* <CustomModal /> */}
-            </>
-          )}
+          <AnimatePresence>
+            {open && (
+              <>
+                <CustomModal
+                  open={open}
+                  setOpen={setOpen}
+                  setRoute={setRoute}
+                  activeItem={activeItem}
+                  component={Login}
+                />
+              </>
+            )}
+          </AnimatePresence>
+        </>
+      )}
+
+      {route === "Sign-Up" && (
+        <>
+          <AnimatePresence>
+            {open && (
+              <>
+                <CustomModal
+                  open={open}
+                  setOpen={setOpen}
+                  setRoute={setRoute}
+                  activeItem={activeItem}
+                  component={SignUp}
+                />
+              </>
+            )}
+          </AnimatePresence>
+        </>
+      )}
+
+      {route === "Verification" && (
+        <>
+          <AnimatePresence>
+            {open && (
+              <>
+                <CustomModal
+                  open={open}
+                  setOpen={setOpen}
+                  setRoute={setRoute}
+                  activeItem={activeItem}
+                  component={Verification}
+                />
+              </>
+            )}
+          </AnimatePresence>
         </>
       )}
     </div>
