@@ -28,7 +28,7 @@ const Login: FC<LoginComponentProperties> = ({ setRoute }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Login with ELearning</h1>
+      <h1 className={`${styles.title}`}>Login with ELearn</h1>
       <form onSubmit={handleSubmit} className="mb-2">
         <label htmlFor="email" className={`${styles.label}`}>
           Enter your Email

@@ -28,7 +28,7 @@ const SignUP: FC<SignUpComponentProperties> = ({ setRoute }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Join to ELearning</h1>
+      <h1 className={`${styles.title}`}>Join to ELearn</h1>
       <form onSubmit={handleSubmit} className="mb-2">
         <label htmlFor="name" className={`${styles.label}`}>
           Enter your Name

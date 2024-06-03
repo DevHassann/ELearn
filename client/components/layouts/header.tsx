@@ -11,6 +11,9 @@ import CustomModal from "../../functions/custom-modal";
 import Login from "../authentication/login-component";
 import SignUp from "../authentication/sign-up-component";
 import Verification from "../authentication/verification-component";
+import Logo from "../../public/logos/logo.png";
+import Image from "next/image";
+import { IoPerson } from "react-icons/io5";
 
 const Header: FC<HeaderProps> = ({
   activeItem,
@@ -51,12 +54,17 @@ const Header: FC<HeaderProps> = ({
       >
         <div className="w-[95%] 800px:w-[92%] h-full m-auto py-2">
           <div className="w-full h-[80px] flex items-center justify-between p-3">
-            <div>
+            <div className="flex items-center gap-2">
+              <Image
+                src={Logo}
+                alt="ELearn Logo"
+                className="800:w-[40px] w-[35px]"
+              />
               <Link
                 href={"/"}
-                className="text-[25px] font-Poppins font-[500] text-black dark:text-white"
+                className="text-[25px] font-Poppins font-[500] text-black dark:text-white translate-y-[2px]"
               >
-                ELearning
+                ELearn
               </Link>
             </div>
             <div className="flex items-center">
@@ -72,8 +80,8 @@ const Header: FC<HeaderProps> = ({
                 />
               </div>
 
-              <HiOutlineUserCircle
-                size={25}
+              <IoPerson
+                size={20}
                 className="cursor-pointer dark:text-white text-black hidden 800px:block"
                 onClick={() => setOpen(true)}
               />
@@ -85,7 +93,7 @@ const Header: FC<HeaderProps> = ({
         <AnimatePresence>
           {openSidebar && (
             <div
-              className="fixed w-full h-screen top-0 left-0 z-[99999] dark:bg-[unset] bg-[#00000024]"
+              className="fixed w-full h-screen top-0 left-0 z-[99999] dark:bg-[unset] bg-[#00000024] 800px:hidden"
               id="screen"
               onClick={handleClose}
             >
@@ -101,11 +109,15 @@ const Header: FC<HeaderProps> = ({
                 <div className="w-[80%] dark:bg-white bg-[crimson] h-[1px] my-6" />
 
                 <div className="flex items-center justify-between flex-col h-[calc(100vh-550px)]">
-                  <HiOutlineUserCircle
-                    size={25}
-                    className="cursor-pointer my-2 dark:text-white text-black"
-                    onClick={() => setOpen(true)}
-                  />
+                  <h1
+                    className="cursor-pointer my-2 text-[18px] dark:text-white text-black"
+                    onClick={() => {
+                      setOpen(true);
+                      setOpenSidebar(false);
+                    }}
+                  >
+                    Login / Sign Up
+                  </h1>
 
                   <p className="text-[16px] px-2 pl-5 dark:text-white text-black">
                     Copyright © 2024 ELearning.

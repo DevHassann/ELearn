@@ -16,8 +16,8 @@ const Page: FC<LandingPageProps> = (props) => {
   return (
     <div>
       <MetaData
-        title="ELearning"
-        description="ELearning is a platform for students to learn and get help from teachers"
+        title="ELearn"
+        description="ELearn is a platform for students to learn and get help from teachers"
         keywords="Learning Management System, LMS"
       />
       <Header
