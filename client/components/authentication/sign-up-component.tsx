@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SignUpComponentProperties } from "@/properties/components.auth.properties";
 import { useFormik } from "formik";
 import {
@@ -11,16 +11,40 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../styles/styles";
 import { SignUpSchema } from "../../schemas/authentiation.schemas";
+import { useRegisterMutation } from "../../redux/features/apis/auth-api";
+import { toast } from "react-hot-toast";
 
 const SignUP: FC<SignUpComponentProperties> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
+  const [register, { isSuccess, data, error, isLoading }] =
+    useRegisterMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      const message = data?.message || "Registration successfull";
+      toast.success(message);
+      setRoute("Verification");
+    }
+
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   // FORMIK FUNCTION
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
     validationSchema: SignUpSchema,
-    onSubmit: async () => {
-      setRoute("Verification");
+    onSubmit: async ({ name, email, password }) => {
+      const data = {
+        name,
+        email,
+        password,
+      };
+      await register(data);
     },
   });
 
@@ -100,10 +124,13 @@ const SignUP: FC<SignUpComponentProperties> = ({ setRoute }) => {
         {errors.password && touched.password && (
           <span className="text-red-500 pt-2 block">{errors.password}</span>
         )}
-        <div className="w-full mt-5">
-          <input type="submit" value="Sign Up" className={`${styles.button}`} />
+        <div className="w-full mt-[2rem] mb-[4rem]">
+          <input
+            type="submit"
+            value={`${isLoading ? "Signing Up..." : "Sign Up"}`}
+            className={`${styles.button}`}
+          />
         </div>
-        <br />
         <hr />
         <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
           Or join us with

@@ -13,3 +13,8 @@ export type CustomModalProps = {
   component: any;
   setRoute?: (route: string) => void;
 };
+
+// PROVIDER PROPERTIES
+export type ProvidersProps = {
+  children: any;
+};

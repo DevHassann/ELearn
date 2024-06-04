@@ -25,6 +25,7 @@
 
 # MISC
 # SERVER SIDE
+/server/.env
 /server/.DS_Store
 /server/.env.local
 /server/.env.development.local
@@ -35,6 +36,7 @@
 /server/yarn-debug.log*
 /server/yarn-error.log*
 # CLIENT SIDE
+/client/.env
 /client/.DS_Store
 /client/.env.local
 /client/.env.development.local

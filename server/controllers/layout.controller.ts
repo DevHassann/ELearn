@@ -19,7 +19,7 @@ export const createLayout = CatchAsyncErrors(
       if (type === "Banner") {
         const { image, title, subTitle } = req.body;
         const myCloud = await cloudinary.v2.uploader.upload(image, {
-          folder: "layout",
+          folder: "ELearn Layouts",
         });
         const banner = {
           image: {
@@ -91,7 +91,7 @@ export const editLayout = CatchAsyncErrors(
 
         // THEN ADD NEW PICTURE
         const myCloud = await cloudinary.v2.uploader.upload(image, {
-          folder: "layout",
+          folder: "ELearn Layouts",
         });
         const banner = {
           image: {

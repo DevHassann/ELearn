@@ -1,6 +1,9 @@
+"use client";
+
 import { Poppins, Josefin_Sans } from "next/font/google";
 import { ThemeProvider } from "../functions/theme-provider";
 import { Toaster } from "react-hot-toast";
+import { Providers } from "../functions/providers";
 
 import "@/styles/globals.css";
 import "@/styles/partials.css";
@@ -29,10 +32,12 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${josefin.variable} !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-400`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-          <Toaster position="top-center" reverseOrder={false} />
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster position="top-center" reverseOrder={false} />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

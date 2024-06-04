@@ -80,10 +80,9 @@ const Login: FC<LoginComponentProperties> = ({ setRoute }) => {
         {errors.password && touched.password && (
           <span className="text-red-500 pt-2 block">{errors.password}</span>
         )}
-        <div className="w-full mt-5">
+        <div className="w-full mt-[2rem] mb-[4rem]">
           <input type="submit" value="Login" className={`${styles.button}`} />
         </div>
-        <br />
         <hr />
         <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
           Or join us with
