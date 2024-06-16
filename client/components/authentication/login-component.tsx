@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import {
   AiOutlineEye,
@@ -11,18 +11,36 @@ import { FcGoogle } from "react-icons/fc";
 import { LoginComponentProperties } from "../../properties/components.auth.properties";
 import { styles } from "../../styles/styles";
 import { LoginSchema } from "../../schemas/authentiation.schemas";
+import { useLoginMutation } from "@/redux/features/apis/auth-api";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
-const Login: FC<LoginComponentProperties> = ({ setRoute }) => {
+const Login: FC<LoginComponentProperties> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
+  const [login, { isLoading, error, isSuccess, data }] = useLoginMutation();
 
   // FORMIK FUNCTION
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: LoginSchema,
     onSubmit: async ({ email, password }) => {
-      console.log(email, password);
+      await login({ email, password });
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Logged in successfully");
+      setOpen(false);
+    }
+
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
 
@@ -81,17 +99,26 @@ const Login: FC<LoginComponentProperties> = ({ setRoute }) => {
           <span className="text-red-500 pt-2 block">{errors.password}</span>
         )}
         <div className="w-full mt-[2rem] mb-[4rem]">
-          <input type="submit" value="Login" className={`${styles.button}`} />
+          <input
+            type="submit"
+            value={`${isLoading ? "Logging In..." : "Login"}`}
+            className={`${styles.button}`}
+          />
         </div>
         <hr />
         <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
           Or join us with
         </h5>
         <div className="flex items-center justify-center my-2">
-          <FcGoogle size={30} className="cursor-pointer mr-2" />
+          <FcGoogle
+            size={30}
+            className="cursor-pointer mr-2"
+            onClick={() => signIn("google")}
+          />
           <AiFillGithub
             size={30}
             className="cursor-pointer ml-2 dark:text-white text-black"
+            onClick={() => signIn("github")}
           />
         </div>
         <h5 className="text-center pt-2 font-Poppins text-[14px] text-black dark:text-white">

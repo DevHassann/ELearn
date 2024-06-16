@@ -1,6 +1,7 @@
 // LOGIN COMPONENT PROPERTIES
 export type LoginComponentProperties = {
   setRoute: (route: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 // SIGN-UP COMPONENT PROPERTIES

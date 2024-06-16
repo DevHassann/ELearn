@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { HeaderProps } from "../../properties/components.layouts.properties";
 import Link from "next/link";
 import NavigationPages from "../../components/includes/navigation-pages";
@@ -14,6 +14,11 @@ import Verification from "../authentication/verification-component";
 import Logo from "../../public/logos/logo.png";
 import Image from "next/image";
 import { IoPerson } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import avatar from "../../public/icons/user-avatar.svg";
+import { useSession } from "next-auth/react";
+import { useSocialAuthMutation } from "../../redux/features/apis/auth-api";
+import toast from "react-hot-toast";
 
 const Header: FC<HeaderProps> = ({
   activeItem,
@@ -24,6 +29,25 @@ const Header: FC<HeaderProps> = ({
 }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const { user } = useSelector((state: any) => state.auth);
+  const { data } = useSession();
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data?.user?.image,
+        });
+      }
+    }
+
+    if (isSuccess) {
+      toast.success("Login Successfully");
+    }
+  }, [data, user, socialAuth, isSuccess]);
 
   // STICKY HEADER FUNCTION
   if (typeof window !== "undefined") {
@@ -80,11 +104,21 @@ const Header: FC<HeaderProps> = ({
                 />
               </div>
 
-              <IoPerson
-                size={20}
-                className="cursor-pointer dark:text-white text-black hidden 800px:block"
-                onClick={() => setOpen(true)}
-              />
+              {user ? (
+                <Link href={"/profile"}>
+                  <Image
+                    src={user.avatar ? user.avatar : avatar}
+                    alt=""
+                    className="w-[45px] h-[45px] rounded-full cursor-pointer hidden 800px:block"
+                  />
+                </Link>
+              ) : (
+                <IoPerson
+                  size={20}
+                  className="cursor-pointer dark:text-white text-black hidden 800px:block"
+                  onClick={() => setOpen(true)}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -109,15 +143,30 @@ const Header: FC<HeaderProps> = ({
                 <div className="w-[80%] dark:bg-white bg-[crimson] h-[1px] my-6" />
 
                 <div className="flex items-center justify-between flex-col h-[calc(100vh-550px)]">
-                  <h1
-                    className="cursor-pointer my-2 text-[18px] dark:text-white text-black"
-                    onClick={() => {
-                      setOpen(true);
-                      setOpenSidebar(false);
-                    }}
-                  >
-                    Login / Sign Up
-                  </h1>
+                  {user ? (
+                    <Link
+                      href={"/profile"}
+                      onClick={() => {
+                        setOpenSidebar(false);
+                      }}
+                    >
+                      <Image
+                        src={user.avatar ? user.avatar : avatar}
+                        alt=""
+                        className="w-[70px] h-[70px] rounded-full cursor-pointer"
+                      />
+                    </Link>
+                  ) : (
+                    <h1
+                      className="cursor-pointer my-2 text-[18px] dark:text-white text-black"
+                      onClick={() => {
+                        setOpen(true);
+                        setOpenSidebar(false);
+                      }}
+                    >
+                      Login / Sign Up
+                    </h1>
+                  )}
 
                   <p className="text-[16px] px-2 pl-5 dark:text-white text-black">
                     Copyright © 2024 ELearning.
