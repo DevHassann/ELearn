@@ -7,7 +7,7 @@ import MetaData from "../functions/meta-deta";
 import Header from "../components/layouts/header";
 import HeroSection from "../components/routes/home/hero-section";
 
-const Page: FC<LandingPageProps> = (props) => {
+const Page: FC<LandingPageProps> = ({}) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
 

@@ -5,7 +5,7 @@ import { HeaderProps } from "../../properties/components.layouts.properties";
 import Link from "next/link";
 import NavigationPages from "../../components/includes/navigation-pages";
 import { ThemeSwitcher } from "../../functions/theme-switcher";
-import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import CustomModal from "../../functions/custom-modal";
 import Login from "../authentication/login-component";

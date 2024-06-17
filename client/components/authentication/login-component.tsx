@@ -11,7 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { LoginComponentProperties } from "../../properties/components.auth.properties";
 import { styles } from "../../styles/styles";
 import { LoginSchema } from "../../schemas/authentiation.schemas";
-import { useLoginMutation } from "@/redux/features/apis/auth-api";
+import { useLoginMutation } from "../../redux/features/apis/auth-api";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 

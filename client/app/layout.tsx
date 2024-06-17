@@ -5,6 +5,7 @@ import { ThemeProvider } from "../functions/theme-provider";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "../functions/providers";
 import { SessionProvider } from "next-auth/react";
+import LoaderCondition from "../functions/loader-condition";
 
 import "@/styles/globals.css";
 import "@/styles/partials.css";
@@ -36,7 +37,7 @@ export default function RootLayout({
         <Providers>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {children}
+              <LoaderCondition>{children}</LoaderCondition>
               <Toaster position="top-center" reverseOrder={false} />
             </ThemeProvider>
           </SessionProvider>

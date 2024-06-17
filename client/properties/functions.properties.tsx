@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // META DATA PROPERTIES
 export type MetaDataProps = {
   title: string;
