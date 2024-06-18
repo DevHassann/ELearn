@@ -4,6 +4,14 @@
 Welcome to ELearn, a powerful and dynamic learning management system (LMS) designed to revolutionize the way you create, manage, and consume educational content. Built with the latest technologies, ELearn ensures a seamless experience across all devices, making it the perfect solution for educators, students, and lifelong learners alike.
 
 ## Key Features
+* Modern Tech Stack: Built with Next.js, TypeScript, Node.js, Express.js, MongoDB, Redis, RTK Query, and Socket.io.
+* Admin Dashboard: Effortlessly manage courses, track progress, and organize users with our feature-rich admin dashboard.
+* Content Management: Upload and organize materials in various formats, from text to multimedia resources.
+* Responsive Design: Ensures flawless functionality and appearance on desktops, tablets, and smartphones.
+* Authentication: Robust security features to protect user privacy and data.
+* Real-time Updates: Leverage Socket.io for real-time communication and updates.
+
+## Languages, Frameworks and Libraries
 * ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) **Next.js**: A React framework for building fast and user-friendly web applications.
 * ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 * ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
